@@ -36,6 +36,38 @@ public partial class MainWindow : Window
                 Progress = 0,
                 IsDownloadEnabled = true,
                 DownloadCommand = new RelayCommand(async () => await StartDownload("PYTHON"))
+            },
+            new ProgrammingLanguage
+            {
+                Name = "GO",
+                Version = "v8.4.3",
+                Progress = 0,
+                IsDownloadEnabled = true,
+                DownloadCommand = new RelayCommand(async () => await StartDownload("PYTHON"))
+            },
+            new ProgrammingLanguage
+            {
+                Name = "RUST",
+                Version = "v8.4.3",
+                Progress = 0,
+                IsDownloadEnabled = true,
+                DownloadCommand = new RelayCommand(async () => await StartDownload("PYTHON"))
+            },
+            new ProgrammingLanguage
+            {
+                Name = "GIT",
+                Version = "v8.4.3",
+                Progress = 0,
+                IsDownloadEnabled = true,
+                DownloadCommand = new RelayCommand(async () => await StartDownload("PYTHON"))
+            },
+            new ProgrammingLanguage
+            {
+                Name = "TERRAFORM",
+                Version = "v8.4.3",
+                Progress = 0,
+                IsDownloadEnabled = true,
+                DownloadCommand = new RelayCommand(async () => await StartDownload("PYTHON"))
             }
         };
 
@@ -49,7 +81,6 @@ public partial class MainWindow : Window
 
     private void RefreshButton_Click(object sender, RoutedEventArgs e)
     {
-        // Lógica para actualizar la lista o el contenido de la aplicación
         MessageBox.Show("Actualizando...");
     }
 
