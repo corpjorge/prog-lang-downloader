@@ -18,5 +18,3 @@ public class RelayCommand : ICommand
 
     public void Execute(object? parameter) => _execute();
 }
-
- 

@@ -43,7 +43,7 @@
 
                             <!-- Nombre del lenguaje y versión en disposición vertical -->
                             <StackPanel Orientation="Vertical" VerticalAlignment="Center" Width="90">
-                                <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="14" />
+                                <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="14" />
                                 <TextBlock Text="{Binding Version}" FontSize="12" Foreground="Gray" />
                             </StackPanel>
                             
@@ -53,22 +53,32 @@
                                              Margin="0,5,0,0" />
                             </StackPanel>
 
-                            <!-- Botón de descarga -->
-                            <Button Content="Descargar" Foreground="White" FontWeight="Bold" Background="#2196F3"
-                                    Width="80" Height="30" Margin="20,0,0,0" Command="{Binding DownloadCommand}">
+                            <Button Content="Descargar" Foreground="White" FontWeight="Bold"
+                                    Width="80" Height="30" Margin="10,0,0,0" 
+                                    Command="{Binding DownloadCommand}"
+                                    IsEnabled="{Binding IsDownloadEnabled}">
                                 <Button.Style>
                                     <Style TargetType="Button">
+                                        <Setter Property="Background" Value="#2196F3" />
+                                        <Setter Property="Foreground" Value="White" />
                                         <Setter Property="Template">
                                             <Setter.Value>
                                                 <ControlTemplate TargetType="Button">
-                                                    <Border Background="{TemplateBinding Background}"
-                                                            CornerRadius="15">
-                                                        <ContentPresenter HorizontalAlignment="Center"
-                                                                          VerticalAlignment="Center" />
+                                                    <Border CornerRadius="5" Background="{TemplateBinding Background}">
+                                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                     </Border>
                                                 </ControlTemplate>
                                             </Setter.Value>
                                         </Setter>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#1E88E5" />
+                                            </Trigger>
+                                            <Trigger Property="IsEnabled" Value="False">
+                                                <Setter Property="Background" Value="Gray" />
+                                                <Setter Property="Foreground" Value="LightGray" />
+                                            </Trigger>
+                                        </Style.Triggers>
                                     </Style>
                                 </Button.Style>
                             </Button>
