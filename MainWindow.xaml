@@ -59,7 +59,7 @@
                                 </StackPanel>
 
                                 <!-- Botón de descarga -->
-                                <Button Content="download" Foreground="White" FontWeight="Bold"
+                                <Button Content="Download" Foreground="White" FontWeight="Bold"
                                         Width="80" Height="30" Margin="10,0,0,0"
                                         Command="{Binding DownloadCommand}"
                                         IsEnabled="{Binding IsDownloadEnabled}">
