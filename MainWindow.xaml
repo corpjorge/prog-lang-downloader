@@ -4,88 +4,136 @@
         Title="Downloader"
         SizeToContent="WidthAndHeight"
         ResizeMode="NoResize">
-    <Grid>
-        <ListView x:Name="LanguageListView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="0">
-            <ListView.Resources>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="Background" Value="Transparent" />
-                    <Setter Property="BorderBrush" Value="Transparent" />
-                    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="ListViewItem">
-                                <Border Background="{TemplateBinding Background}"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        BorderThickness="{TemplateBinding BorderThickness}">
-                                    <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="Transparent" />
-                        </Trigger>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" Value="Transparent" /> 
-                            <Setter Property="BorderBrush" Value="Transparent" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </ListView.Resources>
 
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <Border BorderThickness="0,0,0,1" BorderBrush="LightGray" Padding="10">
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <!-- Icono del lenguaje -->
-                            <Rectangle Width="30" Height="30" Fill="Blue" RadiusX="5" RadiusY="5" Margin="0,0,10,0" />
+    <DockPanel>
+        <!-- ListView principal en el centro -->
+        <Grid DockPanel.Dock="Top" Margin="10,0,10,10">
+            <ListView x:Name="LanguageListView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                      BorderThickness="0">
+                <ListView.Resources>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="BorderBrush" Value="Transparent" />
+                        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListViewItem">
+                                    <Border Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}">
+                                        <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="Transparent" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="BorderBrush" Value="Transparent" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListView.Resources>
 
-                            <!-- Nombre del lenguaje y versión en disposición vertical -->
-                            <StackPanel Orientation="Vertical" VerticalAlignment="Center" Width="90">
-                                <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="14" />
-                                <TextBlock Text="{Binding Version}" FontSize="12" Foreground="Gray" />
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderThickness="0,0,0,1" BorderBrush="LightGray" Padding="10">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <!-- Icono del lenguaje -->
+                                <Rectangle Width="30" Height="30" Fill="#5B9ED4" RadiusX="5" RadiusY="5"
+                                           Margin="0,0,10,0" />
+
+                                <!-- Nombre del lenguaje y versión en disposición vertical -->
+                                <StackPanel Orientation="Vertical" VerticalAlignment="Center" Width="90">
+                                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="14" />
+                                    <TextBlock Text="{Binding Version}" FontSize="12" Foreground="Gray" />
+                                </StackPanel>
+
+                                <StackPanel Orientation="Vertical" VerticalAlignment="Center" Width="200">
+                                    <ProgressBar Width="150" Height="4" Minimum="0" Maximum="100"
+                                                 Value="{Binding Progress}" Foreground="Teal" Background="LightGray"
+                                                 Margin="0,5,0,0" />
+                                </StackPanel>
+
+                                <!-- Botón de descarga -->
+                                <Button Content="download" Foreground="White" FontWeight="Bold"
+                                        Width="80" Height="30" Margin="10,0,0,0"
+                                        Command="{Binding DownloadCommand}"
+                                        IsEnabled="{Binding IsDownloadEnabled}">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Background" Value="#2196F3" />
+                                            <Setter Property="Foreground" Value="White" />
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border CornerRadius="5"
+                                                                Background="{TemplateBinding Background}">
+                                                            <ContentPresenter HorizontalAlignment="Center"
+                                                                              VerticalAlignment="Center" />
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#1E88E5" />
+                                                </Trigger>
+                                                <Trigger Property="IsEnabled" Value="False">
+                                                    <Setter Property="Background" Value="Gray" />
+                                                    <Setter Property="Foreground" Value="LightGray" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
                             </StackPanel>
-                            
-                            <StackPanel Orientation="Vertical" VerticalAlignment="Center" Width="200">
-                                <ProgressBar Width="150" Height="4" Minimum="0" Maximum="100"
-                                             Value="{Binding Progress}" Foreground="Teal" Background="LightGray"
-                                             Margin="0,5,0,0" />
-                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
 
-                            <Button Content="Descargar" Foreground="White" FontWeight="Bold"
-                                    Width="80" Height="30" Margin="10,0,0,0" 
-                                    Command="{Binding DownloadCommand}"
-                                    IsEnabled="{Binding IsDownloadEnabled}">
-                                <Button.Style>
-                                    <Style TargetType="Button">
-                                        <Setter Property="Background" Value="#2196F3" />
-                                        <Setter Property="Foreground" Value="White" />
-                                        <Setter Property="Template">
-                                            <Setter.Value>
-                                                <ControlTemplate TargetType="Button">
-                                                    <Border CornerRadius="5" Background="{TemplateBinding Background}">
-                                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                                    </Border>
-                                                </ControlTemplate>
-                                            </Setter.Value>
-                                        </Setter>
-                                        <Style.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter Property="Background" Value="#1E88E5" />
-                                            </Trigger>
-                                            <Trigger Property="IsEnabled" Value="False">
-                                                <Setter Property="Background" Value="Gray" />
-                                                <Setter Property="Foreground" Value="LightGray" />
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Button.Style>
-                            </Button>
-                        </StackPanel>
-                    </Border>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    </Grid>
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom" Margin="10">
+        
+            <Button Width="60" Height="36.9" Margin="0,0,10,0" Background="Transparent" BorderBrush="Transparent"
+                    ToolTip="update" Click="RefreshButton_Click">
+                <TextBlock Text="⟳" FontSize="40" VerticalAlignment="Center" Margin="0,0,0,0"/>
+            </Button>
+
+            <Button Content="Exit" Foreground="White" FontWeight="Bold"
+                    Width="80" Height="30" Margin="0,0,12,0"
+                    DockPanel.Dock="Right"
+                    Click="CloseButton_Click">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="#45453D" />
+                        <Setter Property="Foreground" Value="White" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border CornerRadius="5" Background="{TemplateBinding Background}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#5A6469" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" Value="Gray" />
+                                <Setter Property="Foreground" Value="LightGray" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </StackPanel>
+    </DockPanel>
 </Window>

@@ -41,6 +41,17 @@ public partial class MainWindow : Window
 
         LanguageListView.ItemsSource = languages;
     }
+    
+    private void CloseButton_Click(object sender, RoutedEventArgs e)
+    {
+        this.Close();
+    }
+
+    private void RefreshButton_Click(object sender, RoutedEventArgs e)
+    {
+        // Lógica para actualizar la lista o el contenido de la aplicación
+        MessageBox.Show("Actualizando...");
+    }
 
     private async Task StartDownload(string languageName)
     {
