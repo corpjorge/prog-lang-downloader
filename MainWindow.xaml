@@ -50,6 +50,7 @@
                                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" Width="90">
                                     <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="14" />
                                     <TextBlock Text="{Binding Version}" FontSize="12" Foreground="Gray" />
+                                    <TextBlock Text="{Binding currentVersion}" FontSize="12" Foreground="Gray" />
                                 </StackPanel>
 
                                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" Width="200">
