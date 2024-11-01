@@ -7,16 +7,27 @@ namespace ProgLangDownloader;
 public class ProgrammingLanguage : INotifyPropertyChanged
 {
     private int _progress;
+    private bool _isDownloadEnabled;
 
     public string Name { get; set; } = string.Empty;
     public string Version { get; set; } = "v1.0.0";
-    
+
     public int Progress
     {
         get => _progress;
         set
         {
             _progress = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public bool IsDownloadEnabled
+    {
+        get => _isDownloadEnabled;
+        set
+        {
+            _isDownloadEnabled = value;
             OnPropertyChanged();
         }
     }

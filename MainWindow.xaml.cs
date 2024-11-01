@@ -13,67 +13,42 @@ public partial class MainWindow : Window
 
         var languages = new List<ProgrammingLanguage>
         {
-            new()
+            new ProgrammingLanguage
             {
                 Name = "NODEJS",
-                Progress = 0,
                 Version = "v8.4.3",
-                DownloadCommand = new RelayCommand(() => StartDownload("NODEJS"))
+                Progress = 0,
+                IsDownloadEnabled = true,
+                DownloadCommand = new RelayCommand(async () => await StartDownload("NODEJS"))
             },
-            new()
+            new ProgrammingLanguage
             {
                 Name = "PHP",
-                Progress = 0,
                 Version = "v8.4.3",
-                DownloadCommand = new RelayCommand(() => StartDownload("PHP"))
+                Progress = 0,
+                IsDownloadEnabled = true,
+                DownloadCommand = new RelayCommand(async () => await StartDownload("PHP"))
             },
-            new()
+            new ProgrammingLanguage
             {
                 Name = "PYTHON",
+                Version = "v8.4.3",
                 Progress = 0,
-                Version = "v8.4.3",
-                DownloadCommand = new RelayCommand(() => StartDownload("PYTHON"))
-            },
-            new()
-            {
-                Name = "GO",
-                Progress = 75,
-                Version = "v8.4.3",
-                 DownloadCommand = new RelayCommand(() => StartDownload("PYTHON"))
-            },
-            new()
-            {
-                Name = "RUST",
-                Progress = 75,
-                Version = "v8.4.3",
-                 DownloadCommand = new RelayCommand(() => StartDownload("PYTHON"))
-            },
-            new()
-            {
-                Name = "GIT",
-                Progress = 75,
-                Version = "v8.4.3",
-                 DownloadCommand = new RelayCommand(() => StartDownload("PYTHON"))
-            },
-            new()
-            {
-                Name = "TERRAFORM",
-                Progress = 75,
-                Version = "v8.4.3",
-                 DownloadCommand = new RelayCommand(() => StartDownload("PYTHON"))
+                IsDownloadEnabled = true,
+                DownloadCommand = new RelayCommand(async () => await StartDownload("PYTHON"))
             }
-
-            // Agrega más lenguajes aquí si lo deseas
         };
 
         LanguageListView.ItemsSource = languages;
     }
 
-    private async void StartDownload(string languageName)
+    private async Task StartDownload(string languageName)
     {
         var language = ((List<ProgrammingLanguage>)LanguageListView.ItemsSource).Find(l => l.Name == languageName);
         if (language != null)
         {
+            language.IsDownloadEnabled = false; // Deshabilitar el botón al iniciar la descarga
+
             for (int i = 0; i <= 100; i += 10)
             {
                 language.Progress = i;
@@ -81,6 +56,7 @@ public partial class MainWindow : Window
             }
 
             MessageBox.Show($"{languageName} descargado con éxito!");
+            language.IsDownloadEnabled = true; // Habilitar el botón al terminar la descarga
         }
     }
 }
