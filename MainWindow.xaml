@@ -98,11 +98,11 @@
         </Grid>
 
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right"
-                    VerticalAlignment="Bottom" Margin="10">
+                    VerticalAlignment="Bottom" Margin="10,0,10,5">
         
             <Button Width="60" Height="47" Margin="0,0,10,0" Background="Transparent" BorderBrush="Transparent"
                     ToolTip="update" Click="RefreshButton_Click">
-                <TextBlock Text="⟳" FontSize="40" VerticalAlignment="Center" Margin="0,0,0,9"/>
+                <TextBlock Text="⟳" FontSize="40" VerticalAlignment="Center" Margin="0,0,0,9" Foreground="#1FACF2"/>
             </Button>
 
             <Button Content="Exit" Foreground="White" FontWeight="Bold"
