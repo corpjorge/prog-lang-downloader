@@ -127,7 +127,7 @@ namespace ProgLangDownloader.Services
 
                 Directory.Move(extractedFolder, finalDestination);
                 Console.WriteLine($"Folder moved to: {finalDestination}");
-                NodePathHelper.UpdateNodePathEnvironmentVariable(finalDestination);
+                NodePathHelper.UpdateNodePathAndInstallNpm(finalDestination);
             }
 
             if (File.Exists(outputPath))

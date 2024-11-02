@@ -22,13 +22,25 @@ namespace ProgLangDownloader.Models
         public string Version
         {
             get => _version;
-            set => SetProperty(ref _version, value);
+            set
+            {
+                if (SetProperty(ref _version, value))
+                {
+                    OnPropertyChanged(nameof(IsOutdated));
+                }
+            }
         }
 
         public string CurrentVersion
         {
             get => _currentVersion;
-            set => SetProperty(ref _currentVersion, value);
+            set
+            {
+                if (SetProperty(ref _currentVersion, value))
+                {
+                    OnPropertyChanged(nameof(IsOutdated));
+                }
+            }
         }
 
         public int Progress
@@ -49,6 +61,26 @@ namespace ProgLangDownloader.Models
             set => SetProperty(ref _downloadCommand, value);
         }
 
+        public bool IsOutdated
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(CurrentVersion) || string.IsNullOrEmpty(Version))
+                    return false;
+
+                try
+                {
+                    var installedVersion = new Version(CurrentVersion.Replace("Installed: ", "").TrimStart('v'));
+                    var latestVersion = new Version(Version.Replace("LTS: ", "").TrimStart('v'));
+                    return installedVersion < latestVersion;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -56,13 +88,16 @@ namespace ProgLangDownloader.Models
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void SetProperty<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+        private bool SetProperty<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
         {
             if (!Equals(field, value))
             {
                 field = value;
                 OnPropertyChanged(propertyName);
+                return true;
             }
+
+            return false;
         }
     }
 }

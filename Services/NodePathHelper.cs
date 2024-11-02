@@ -6,6 +6,12 @@ namespace ProgLangDownloader.Helpers
 {
     public static class NodePathHelper
     {
+        public static void UpdateNodePathAndInstallNpm(string newNodePath)
+        {
+            UpdateNodePathEnvironmentVariable(newNodePath);
+            InstallLatestNpm();
+        }
+
         public static void UpdateNodePathEnvironmentVariable(string newNodePath)
         {
             string currentNodePath = GetExistingNodePath();
@@ -60,6 +66,39 @@ namespace ProgLangDownloader.Helpers
                 MessageBox.Show("Failed to get current Node.js path");
                 Console.WriteLine("Failed to get current Node.js path.");
                 return null;
+            }
+        }
+
+        private static void InstallLatestNpm()
+        {
+            try
+            {
+                using var process = new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = "cmd.exe",
+                        Arguments = "/c npm install -g npm@latest",
+                        RedirectStandardOutput = true,
+                        RedirectStandardError = true,
+                        UseShellExecute = false,
+                        CreateNoWindow = true
+                    }
+                };
+
+                process.OutputDataReceived += (sender, args) => Console.WriteLine(args.Data);
+                process.ErrorDataReceived += (sender, args) => Console.WriteLine("ERROR: " + args.Data);
+
+                process.Start();
+                process.BeginOutputReadLine();
+                process.BeginErrorReadLine();
+                process.WaitForExit();
+
+                Console.WriteLine("npm updated to the latest version..");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error updating npm: {ex.Message}");
             }
         }
     }

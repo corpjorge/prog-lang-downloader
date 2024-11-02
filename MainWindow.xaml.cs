@@ -49,7 +49,6 @@ namespace ProgLangDownloader
                 language.IsDownloadEnabled = false;
                 var progressHandler = new Progress<int>(value => language.Progress = value);
                 await _downloadManager.StartDownloadAsync(language, progressHandler);
-                await NodeVersionService.GetLatestLTSNodeVersionAsync();
             }
         }
 
