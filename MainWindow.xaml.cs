@@ -36,7 +36,7 @@ namespace ProgLangDownloader
                     IsDownloadEnabled = true,
                     DownloadCommand = new RelayCommand(async () => await StartDownload("NODEJS (LTS)"))
                 },
-                new()
+                // new()
                 // {
                 //     Name = "GO",
                 //     Version = $"{latestGoVersion}",
