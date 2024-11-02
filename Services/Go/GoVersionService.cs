@@ -51,7 +51,7 @@ namespace ProgLangDownloader.Services
             }
         }
 
-        public static async Task DownloadAndSaveLTSNodeVersionAsync(IProgress<int> progress)
+        public static async Task DownloadAndSaveLTSGoVersionAsync(IProgress<int> progress)
         {
             var latestLTSVersion = await GetLatestLTSGoVersionAsync();
 

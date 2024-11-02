@@ -22,30 +22,30 @@ namespace ProgLangDownloader
             var latestNodeVersion = await NodeVersionService.GetLatestLTSNodeVersionAsync();
             var installedNodeVersion = NodeVersionService.GetInstalledNodeVersion();
             
-            var latestGoVersion = await GoVersionService.GetLatestLTSGoVersionAsync();
-            var installedGoVersion = GoVersionService.GetInstalledGoVersion();
+            // var latestGoVersion = await GoVersionService.GetLatestLTSGoVersionAsync();
+            // var installedGoVersion = GoVersionService.GetInstalledGoVersion();
             
             var languages = new List<ProgrammingLanguage>
             {
                 new()
                 {
                     Name = "NODEJS (LTS)",
-                    Version = $"LTS: {latestNodeVersion}",
+                    Version = $"{latestNodeVersion} LTS",
                     CurrentVersion = $"Installed: {installedNodeVersion}",
                     Progress = 0,
                     IsDownloadEnabled = true,
                     DownloadCommand = new RelayCommand(async () => await StartDownload("NODEJS (LTS)"))
                 },
                 new()
-                {
-                    Name = "GO",
-                    Version = $"LTS: {latestGoVersion}",
-                    CurrentVersion = $"Installed: {installedGoVersion}",
-                    Progress = 0,
-                    IsDownloadEnabled = true,
-                    DownloadCommand = new RelayCommand(async () => await StartDownload("GO"))
-                },
-                // Otras entradas de lenguajes de programación aquí
+                // {
+                //     Name = "GO",
+                //     Version = $"{latestGoVersion}",
+                //     CurrentVersion = $"Installed: {installedGoVersion}",
+                //     Progress = 0,
+                //     IsDownloadEnabled = true,
+                //     DownloadCommand = new RelayCommand(async () => await StartDownload("GO"))
+                // },
+       
             };
 
             LanguageListView.ItemsSource = languages;

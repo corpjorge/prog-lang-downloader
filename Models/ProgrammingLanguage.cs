@@ -66,6 +66,7 @@ namespace ProgLangDownloader.Models
         {
             get
             {
+                Console.WriteLine(_currentVersion);
                 if (string.IsNullOrEmpty(CurrentVersion) || string.IsNullOrEmpty(Version))
                     return false;
 

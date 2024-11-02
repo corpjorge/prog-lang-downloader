@@ -23,6 +23,7 @@ namespace ProgLangDownloader.Managers
                 catch (Exception ex)
                 {
                     MessageBox.Show($"Error downloading: {ex.Message}");
+                    language.Progress = 0;
                 }
                 finally
                 {
