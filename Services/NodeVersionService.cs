@@ -50,7 +50,6 @@ namespace ProgLangDownloader.Services
             }
         }
 
-
         public static async Task DownloadAndSaveLTSNodeVersionAsync(IProgress<int> progress)
         {
             var latestLTSVersion = await GetLatestLTSNodeVersionAsync();
@@ -92,7 +91,7 @@ namespace ProgLangDownloader.Services
                     await fileStream.WriteAsync(buffer, 0, read);
                     bytesRead += read;
 
-                    var newProgress = (int)((double)bytesRead / totalBytes * 100);
+                    var newProgress = (int)((double)bytesRead / totalBytes * 80);
                     if (newProgress > percentComplete)
                     {
                         percentComplete = newProgress;

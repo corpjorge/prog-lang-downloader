@@ -60,7 +60,6 @@ namespace ProgLangDownloader
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
             NodeVersionService.GetLatestLTSNodeVersionAsync();
-            NodeVersionService.GetInstalledNodeVersion();
         }
     }
 }

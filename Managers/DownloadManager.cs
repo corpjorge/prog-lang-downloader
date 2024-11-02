@@ -15,9 +15,10 @@ namespace ProgLangDownloader.Managers
                 try
                 {
                     await NodeVersionService.DownloadAndSaveLTSNodeVersionAsync(progressHandler);
+                    language.Progress = 100;
                     MessageBox.Show("Node.js LTS download completed.");
 
-                    language.CurrentVersion = $"Installed: {NodeVersionService.GetInstalledNodeVersion()}";
+                    language.CurrentVersion = $"Installed: { await NodeVersionService.GetLatestLTSNodeVersionAsync()}";
                 }
                 catch (Exception ex)
                 {
