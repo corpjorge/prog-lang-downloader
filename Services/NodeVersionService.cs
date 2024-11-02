@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -50,9 +51,52 @@ namespace ProgLangDownloader.Services
                 return "No instalado";
             }
         }
-    }
+        
+        public static async Task<string> GetLTSNodeDownloadUrlAsync()
+        {
+            var latestLTSVersion = await GetLatestLTSNodeVersionAsync();
+            return $"https://nodejs.org/dist/{latestLTSVersion}/node-{latestLTSVersion}-win-x64.zip";
+        }
+        
+        public static async Task DownloadAndSaveLTSNodeVersionAsync(IProgress<int> progress)
+        {
+            var downloadUrl = await GetLTSNodeDownloadUrlAsync();
+            if (downloadUrl == null)
+            {
+                throw new Exception("No se pudo obtener la URL de descarga para la versión LTS.");
+            }
 
-    // Clase auxiliar para deserializar los datos de versiones de Node.js
+            var outputPath = "node-lts.zip";
+            using var client = new HttpClient();
+            var response = await client.GetAsync(downloadUrl, HttpCompletionOption.ResponseHeadersRead);
+
+            response.EnsureSuccessStatusCode();
+
+            var totalBytes = response.Content.Headers.ContentLength ?? 1L;
+            var stream = await response.Content.ReadAsStreamAsync();
+            var buffer = new byte[8192];
+            var bytesRead = 0L;
+            var percentComplete = 0;
+
+            using (var fileStream = new FileStream(outputPath, FileMode.Create, FileAccess.Write, FileShare.None))
+            {
+                int read;
+                while ((read = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                {
+                    await fileStream.WriteAsync(buffer, 0, read);
+                    bytesRead += read;
+
+                    var newProgress = (int)((double)bytesRead / totalBytes * 100);
+                    if (newProgress > percentComplete)
+                    {
+                        percentComplete = newProgress;
+                        progress?.Report(percentComplete);
+                    }
+                }
+            }
+        }
+    }
+ 
     public class NodeVersion
     {
         public string Version { get; set; }

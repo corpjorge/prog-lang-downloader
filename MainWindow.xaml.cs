@@ -1,7 +1,6 @@
-﻿using System.Net.Http;
-using System.Net.Http.Json;
-using System.Windows;
+﻿using System.Windows;
 using ProgLangDownloader.Commands;
+using ProgLangDownloader.Managers;
 using ProgLangDownloader.Models;
 using ProgLangDownloader.Services;
 
@@ -9,9 +8,12 @@ namespace ProgLangDownloader
 {
     public partial class MainWindow : Window
     {
+        private readonly DownloadManager _downloadManager;
+
         public MainWindow()
         {
             InitializeComponent();
+            _downloadManager = new DownloadManager();
             LoadLanguagesAsync();
         }
 
@@ -26,10 +28,11 @@ namespace ProgLangDownloader
                 {
                     Name = "NODEJS (LTS)",
                     Version = $"LTS: {latestNodeVersion}",
-                    currentVersion = $"Instalada: {installedNodeVersion}",
+                    CurrentVersion  = $"Instalada: {installedNodeVersion}",
                     Progress = 0,
                     IsDownloadEnabled = true,
-                    DownloadCommand = new RelayCommand(async () => await StartDownload("NODEJS"))
+                    DownloadCommand = new RelayCommand(async () => await StartDownload("NODEJS (LTS)"))
+
                 },
                 // Otras entradas de lenguajes de programación aquí
             };
@@ -41,18 +44,12 @@ namespace ProgLangDownloader
         private async Task StartDownload(string languageName)
         {
             var language = ((List<ProgrammingLanguage>)LanguageListView.ItemsSource).Find(l => l.Name == languageName);
+             
             if (language != null)
-            {
+            { 
                 language.IsDownloadEnabled = false;
-
-                for (int i = 0; i <= 100; i += 10)
-                {
-                    language.Progress = i;
-                    await Task.Delay(100);
-                }
-
-                MessageBox.Show($"{languageName} descargado con éxito!");
-                language.IsDownloadEnabled = true;
+                var progressHandler = new Progress<int>(value => language.Progress = value);
+                await _downloadManager.StartDownloadAsync(language, progressHandler);
             }
         }
 
@@ -63,7 +60,8 @@ namespace ProgLangDownloader
 
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Actualizando...");
+            NodeVersionService.GetLatestLTSNodeVersionAsync();
+            NodeVersionService.GetInstalledNodeVersion();
         }
     }
 }
