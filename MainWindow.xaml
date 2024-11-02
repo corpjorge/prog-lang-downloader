@@ -45,11 +45,12 @@
                                     <Rectangle.Style>
                                         <Style TargetType="Rectangle">
                                             <Setter Property="Fill" Value="#5B9ED4" />
-                                            <!-- Azul si está actualizado -->
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding IsOutdated}" Value="True">
-                                                    <Setter Property="Fill" Value="#ffc107" />
-                                                    <!-- Amarillo si está desactualizado -->
+                                                    <Setter Property="Fill" Value="#FFC107" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Notinstalled}" Value="True">
+                                                    <Setter Property="Fill" Value="#A1A09D" />
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>

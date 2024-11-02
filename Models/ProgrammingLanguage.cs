@@ -39,6 +39,7 @@ namespace ProgLangDownloader.Models
                 if (SetProperty(ref _currentVersion, value))
                 {
                     OnPropertyChanged(nameof(IsOutdated));
+                    OnPropertyChanged(nameof(Notinstalled));
                 }
             }
         }
@@ -79,6 +80,11 @@ namespace ProgLangDownloader.Models
                     return false;
                 }
             }
+        }
+
+        public bool Notinstalled
+        {  
+            get => CurrentVersion == "Installed: None";
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
