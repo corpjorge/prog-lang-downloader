@@ -1,11 +1,9 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
-using System.Threading.Tasks;
+using System.IO.Compression;
+using ProgLangDownloader.Helpers;
 
 namespace ProgLangDownloader.Services
 {
@@ -52,21 +50,29 @@ namespace ProgLangDownloader.Services
             }
         }
         
-        public static async Task<string> GetLTSNodeDownloadUrlAsync()
-        {
-            var latestLTSVersion = await GetLatestLTSNodeVersionAsync();
-            return $"https://nodejs.org/dist/{latestLTSVersion}/node-{latestLTSVersion}-win-x64.zip";
-        }
-        
+    
         public static async Task DownloadAndSaveLTSNodeVersionAsync(IProgress<int> progress)
         {
-            var downloadUrl = await GetLTSNodeDownloadUrlAsync();
+            var latestLTSVersion = await GetLatestLTSNodeVersionAsync();
+            
+            var downloadUrl = $"https://nodejs.org/dist/{latestLTSVersion}/node-{latestLTSVersion}-win-x64.zip";
+            Console.WriteLine($"downloadUrl ...{downloadUrl}");
             if (downloadUrl == null)
             {
                 throw new Exception("No se pudo obtener la URL de descarga para la versión LTS.");
             }
 
-            var outputPath = "node-lts.zip";
+            var outputPath = @$"C:\Dev\bin\temp\node-lts-{latestLTSVersion}.zip";
+            var directoryPath = Path.GetDirectoryName(outputPath);
+
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+            
+            Console.WriteLine($"Directorio creado (si no existía): {directoryPath}");
+            
+            
             using var client = new HttpClient();
             var response = await client.GetAsync(downloadUrl, HttpCompletionOption.ResponseHeadersRead);
 
@@ -94,6 +100,48 @@ namespace ProgLangDownloader.Services
                     }
                 }
             }
+     
+            var extractPath = @$"C:\Dev\bin\temp\node-lts-{latestLTSVersion}";
+            
+            if (Directory.Exists(extractPath))
+            {
+                Directory.Delete(extractPath, true);
+            }
+            
+            ZipFile.ExtractToDirectory(outputPath, extractPath);
+            Console.WriteLine($"Archivo descomprimido en: {extractPath}");
+
+            var extractedFolder = Directory.GetDirectories(extractPath).FirstOrDefault();
+            var destinationPath = @"C:\Dev\bin";
+
+            if (extractedFolder != null)
+            {
+                var originalFolderName = Path.GetFileName(extractedFolder);
+                var adjustedFolderName = originalFolderName.Replace("-win-x64", "");
+                var finalDestination = Path.Combine(destinationPath, adjustedFolderName);
+                
+                if (Directory.Exists(finalDestination))
+                {
+                    Directory.Delete(finalDestination, true);
+                }
+                
+                Directory.Move(extractedFolder, finalDestination);
+                Console.WriteLine($"Carpeta movida a: {finalDestination}");
+                NodePathHelper.UpdateNodePathEnvironmentVariable(finalDestination);
+            }
+
+            if (File.Exists(outputPath))
+            {
+                File.Delete(outputPath);
+            }
+
+            if (Directory.Exists(extractPath))
+            {
+                Directory.Delete(extractPath, true); 
+            }
+
+            Console.WriteLine("Directorio 'temp' limpiado."); 
+           
         }
     }
  
