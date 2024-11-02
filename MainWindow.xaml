@@ -4,9 +4,7 @@
         Title="Downloader"
         SizeToContent="WidthAndHeight"
         ResizeMode="NoResize">
-
     <DockPanel>
-        <!-- ListView principal en el centro -->
         <Grid DockPanel.Dock="Top" Margin="10,0,10,10">
             <ListView x:Name="LanguageListView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                       BorderThickness="0">
@@ -42,7 +40,7 @@
                     <DataTemplate>
                         <Border BorderThickness="0,0,0,1" BorderBrush="LightGray" Padding="10">
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                       
+
                                 <Rectangle Width="30" Height="30" Fill="#5B9ED4" RadiusX="5" RadiusY="5"
                                            Margin="0,0,10,0" />
 
@@ -98,10 +96,10 @@
 
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right"
                     VerticalAlignment="Bottom" Margin="10,0,10,5">
-        
+
             <Button Width="60" Height="47" Margin="0,0,10,0" Background="Transparent" BorderBrush="Transparent"
                     ToolTip="update" Click="RefreshButton_Click">
-                <TextBlock Text="⟳" FontSize="40" VerticalAlignment="Center" Margin="0,0,0,9" Foreground="#1FACF2"/>
+                <TextBlock Text="⟳" FontSize="40" VerticalAlignment="Center" Margin="0,0,0,9" Foreground="#1FACF2" />
             </Button>
 
             <Button Content="Exit" Foreground="White" FontWeight="Bold"

@@ -9,17 +9,17 @@ namespace ProgLangDownloader.Managers
         public async Task StartDownloadAsync(ProgrammingLanguage language, IProgress<int> progressHandler)
         {
             Console.WriteLine($"StartDownloadAsync {language.Name}...");
-            
+
             if (language.Name == "NODEJS (LTS)")
             {
                 try
                 {
                     await NodeVersionService.DownloadAndSaveLTSNodeVersionAsync(progressHandler);
-                    MessageBox.Show("Descarga de Node.js LTS completada.");
+                    MessageBox.Show("Node.js LTS download completed.");
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error al descargar: {ex.Message}");
+                    MessageBox.Show($"Error downloading: {ex.Message}");
                 }
                 finally
                 {

@@ -28,11 +28,10 @@ namespace ProgLangDownloader
                 {
                     Name = "NODEJS (LTS)",
                     Version = $"LTS: {latestNodeVersion}",
-                    CurrentVersion  = $"Instalada: {installedNodeVersion}",
+                    CurrentVersion = $"Installed: {installedNodeVersion}",
                     Progress = 0,
                     IsDownloadEnabled = true,
                     DownloadCommand = new RelayCommand(async () => await StartDownload("NODEJS (LTS)"))
-
                 },
                 // Otras entradas de lenguajes de programación aquí
             };
@@ -44,12 +43,13 @@ namespace ProgLangDownloader
         private async Task StartDownload(string languageName)
         {
             var language = ((List<ProgrammingLanguage>)LanguageListView.ItemsSource).Find(l => l.Name == languageName);
-             
+
             if (language != null)
-            { 
+            {
                 language.IsDownloadEnabled = false;
                 var progressHandler = new Progress<int>(value => language.Progress = value);
                 await _downloadManager.StartDownloadAsync(language, progressHandler);
+                await NodeVersionService.GetLatestLTSNodeVersionAsync();
             }
         }
 

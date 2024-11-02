@@ -46,20 +46,20 @@ namespace ProgLangDownloader.Services
             }
             catch
             {
-                return "No instalado";
+                return "None";
             }
         }
-        
-    
+
+
         public static async Task DownloadAndSaveLTSNodeVersionAsync(IProgress<int> progress)
         {
             var latestLTSVersion = await GetLatestLTSNodeVersionAsync();
-            
+
             var downloadUrl = $"https://nodejs.org/dist/{latestLTSVersion}/node-{latestLTSVersion}-win-x64.zip";
             Console.WriteLine($"downloadUrl ...{downloadUrl}");
             if (downloadUrl == null)
             {
-                throw new Exception("No se pudo obtener la URL de descarga para la versión LTS.");
+                throw new Exception("Could not get download URL for LTS release.");
             }
 
             var outputPath = @$"C:\Dev\bin\temp\node-lts-{latestLTSVersion}.zip";
@@ -69,10 +69,10 @@ namespace ProgLangDownloader.Services
             {
                 Directory.CreateDirectory(directoryPath);
             }
-            
-            Console.WriteLine($"Directorio creado (si no existía): {directoryPath}");
-            
-            
+
+            Console.WriteLine($"Directory created (if not existing): {directoryPath}");
+
+
             using var client = new HttpClient();
             var response = await client.GetAsync(downloadUrl, HttpCompletionOption.ResponseHeadersRead);
 
@@ -100,16 +100,16 @@ namespace ProgLangDownloader.Services
                     }
                 }
             }
-     
+
             var extractPath = @$"C:\Dev\bin\temp\node-lts-{latestLTSVersion}";
-            
+
             if (Directory.Exists(extractPath))
             {
                 Directory.Delete(extractPath, true);
             }
-            
+
             ZipFile.ExtractToDirectory(outputPath, extractPath);
-            Console.WriteLine($"Archivo descomprimido en: {extractPath}");
+            Console.WriteLine($"Unzipped file in: {extractPath}");
 
             var extractedFolder = Directory.GetDirectories(extractPath).FirstOrDefault();
             var destinationPath = @"C:\Dev\bin";
@@ -119,14 +119,14 @@ namespace ProgLangDownloader.Services
                 var originalFolderName = Path.GetFileName(extractedFolder);
                 var adjustedFolderName = originalFolderName.Replace("-win-x64", "");
                 var finalDestination = Path.Combine(destinationPath, adjustedFolderName);
-                
+
                 if (Directory.Exists(finalDestination))
                 {
                     Directory.Delete(finalDestination, true);
                 }
-                
+
                 Directory.Move(extractedFolder, finalDestination);
-                Console.WriteLine($"Carpeta movida a: {finalDestination}");
+                Console.WriteLine($"Folder moved to: {finalDestination}");
                 NodePathHelper.UpdateNodePathEnvironmentVariable(finalDestination);
             }
 
@@ -137,14 +137,13 @@ namespace ProgLangDownloader.Services
 
             if (Directory.Exists(extractPath))
             {
-                Directory.Delete(extractPath, true); 
+                Directory.Delete(extractPath, true);
             }
 
-            Console.WriteLine("Directorio 'temp' limpiado."); 
-           
+            Console.WriteLine("'Temp' directory cleaned.");
         }
     }
- 
+
     public class NodeVersion
     {
         public string Version { get; set; }
